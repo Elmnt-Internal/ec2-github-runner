@@ -32,7 +32,9 @@ function buildUserDataScript(githubRegistrationToken, label) {
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `echo ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work >> test`
+      `echo ./config.sh --url https://github.com/${config.githubContext.owner} > test2`,
+      `echo ./config.sh --url https://github.com/"${config.githubContext.owner}" > test3`,
+      `echo ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work > test1`,
       `./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work`,
       './run.sh'
     ];
