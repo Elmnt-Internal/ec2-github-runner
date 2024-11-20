@@ -19,7 +19,9 @@ async function getRunner(label) {
 
 // get GitHub Registration Token for registering a self-hosted runner
 async function getRegistrationToken() {
-  core.info(`Github Token: ${config.input.githubToken}`)
+  core.info(`Github owner: ${config.githubContext.owner}`)
+  core.info(`Github repo: ${config.githubContext.repo}`)
+
   const octokit = github.getOctokit(config.input.githubToken);
 
   try {
