@@ -25,7 +25,9 @@ async function getRegistrationToken() {
   const octokit = github.getOctokit(config.input.githubToken);
 
   try {
-    const response = await octokit.request('POST /repos/{owner}/{repo}/actions/runners/registration-token', config.githubContext);
+    // const response = await octokit.request('POST /repos/{owner}/{repo}/actions/runners/registration-token', config.githubContext);
+    const response = await octokit.request('POST /orgs/{org}/actions/runners/registration-token', { org: config.githubContext.owner });
+
     core.info('GitHub Registration Token is received');
     return response.data.token;
   } catch (error) {
