@@ -61,7 +61,10 @@ async function removeRunner() {
   }
 
   try {
-    await octokit.request('DELETE /orgs/{owner}/actions/runners/{runner_id}', _.merge(config.githubContext.owner, { runner_id: runner.id }));
+    await octokit.request('DELETE /orgs/{owner}/actions/runners/{runner_id}', {
+      owner: config.githubContext.owner,
+      runner_id: runner.id
+    });
     core.info(`GitHub self-hosted runner ${runner.name} is removed`);
     return;
   } catch (error) {
