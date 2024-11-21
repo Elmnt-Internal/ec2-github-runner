@@ -12,7 +12,7 @@ async function getRunner(label) {
 
   try {
     core.info(`Inside getRunner try block`);
-    const runners = await octokit.paginate('GET /orgs/{owner}/actions/runners', config.githubContext.owner);
+    const runners = await octokit.paginate('GET /orgs/{owner}/actions/runners', { owner: config.githubContext.owner });
     // print runners name for debugging
     core.info(`Runners: ${JSON.stringify(runners.map(runner => runner.name))}`);
     // print label for debugging
