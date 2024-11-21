@@ -16,23 +16,20 @@ function buildUserDataScript(githubRegistrationToken, label) {
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work`,
+      `./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
       './run.sh'
     ];
   } else {
     return [
       '#!/bin/bash',
       'mkdir actions-runner && cd actions-runner',
-      `echo "./config.sh --url https://github.com/${config.githubContext.owner}" > test2`,
-      `echo ./config.sh --url https://github.com/"${config.githubContext.owner}" > test3`,
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'case $(uname -m) in aarch64) ARCH="arm64" ;; amd64|x86_64) ARCH="x64" ;; esac && export RUNNER_ARCH=${ARCH}',
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `echo ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work > test1`,
-      `./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name $(hostname)-$(uuidgen) --runnergroup default --work _work`,
+      `./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
       './run.sh'
     ];
   }
