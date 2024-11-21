@@ -5,10 +5,7 @@ const config = require('./config');
 
 // User data scripts are run as the root user
 function buildUserDataScript(githubRegistrationToken, label) {
-  let tokenArg = 'token';
-  if (githubTokenType == 'fine-grained') {
-    tokenArg = 'pat';
-  }
+  const tokenArg = 'token';
 
   if (config.input.runnerHomeDir) {
     // If runner home directory is specified, we expect the actions-runner software (and dependencies)
