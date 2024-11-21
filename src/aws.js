@@ -37,8 +37,10 @@ function buildUserDataScript(githubRegistrationToken, label) {
 
 async function startEc2Instance(label, githubRegistrationToken, githubTokenType) {
   const ec2 = new EC2Client();
+  // print githubTokenType for debugging
+  core.info(`Github token type: ${githubTokenType}`);
 
-  const userData = buildUserDataScript(githubRegistrationToken, githubTokenType, label);
+  const userData = buildUserDataScript(githubRegistrationToken, label);
 
   const params = {
     ImageId: config.input.ec2ImageId,
