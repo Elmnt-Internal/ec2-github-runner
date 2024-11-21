@@ -7,25 +7,14 @@ const config = require('./config');
 // as we don't have the runner's id, it's not possible to get it in any other way
 async function getRunner(label) {
   // print insdie getRunner for debugging
-  core.info(`Inside getRunner`);
   const octokit = github.getOctokit(config.input.githubToken);
 
   try {
-    core.info(`Inside getRunner try block`);
     const runners = await octokit.paginate('GET /orgs/{owner}/actions/runners', { owner: config.githubContext.owner });
-    // print runners name for debugging
-    core.info(`Runners: ${JSON.stringify(runners.map(runner => runner.name))}`);
-    // print label for debugging
-    core.info(`Label: ${label}`);
-
     const foundRunners = _.filter(runners, { labels: [{ name: label }] });
-    // print found runners for debugging
-    core.info(`Found runners: ${JSON.stringify(foundRunners.map(runner => runner.name))}`);
 
     return foundRunners.length > 0 ? foundRunners[0] : null;
   } catch (error) {
-    core.error('getRunner runner search error');
-    // print error for debugging
     core.info(`Error: ${error}`);
     return null;
   }
@@ -92,10 +81,6 @@ async function waitForRunnerRegistered(label) {
         clearInterval(interval);
         reject(`A timeout of ${timeoutMinutes} minutes is exceeded. Your AWS EC2 instance was not able to register itself in GitHub as a new self-hosted runner.`);
       }
-      // print runner state for debugging
-      core.info(`Runner state: ${JSON.stringify(runner)}`);
-      // print label for debugging
-      core.info(`Label: ${label}`);
       if (runner && runner.status === 'online') {
         core.info(`GitHub self-hosted runner ${runner.name} is registered and ready to use`);
         clearInterval(interval);
