@@ -22,15 +22,16 @@ function buildUserDataScript(githubRegistrationToken, label) {
   } else {
     return [
       '#!/bin/bash',
-      'mkdir actions-runner && cd actions-runner',
+      'mkdir /tmp/actions-runner && cd /tmp/actions-runner',
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'case $(uname -m) in aarch64) ARCH="arm64" ;; amd64|x86_64) ARCH="x64" ;; esac && export RUNNER_ARCH=${ARCH}',
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `sudo -u "avihu.ayaakobi" -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      'sudo -u "avihu.ayaakobi" -- ./run.sh'
+      'chown -R avihu.ayaakobi: /tmp/actions-runner',
+      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./run.sh'
     ];
   }
 }
