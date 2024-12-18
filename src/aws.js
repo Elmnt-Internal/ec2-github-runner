@@ -29,8 +29,8 @@ function buildUserDataScript(githubRegistrationToken, label) {
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `sudo -u "avihu.ayaakobi" ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      'sudo -u "avihu.ayaakobi" ./run.sh'
+      `sudo -u "avihu.ayaakobi" -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo -u "avihu.ayaakobi" -- ./run.sh'
     ];
   }
 }
