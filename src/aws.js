@@ -16,8 +16,8 @@ function buildUserDataScript(githubRegistrationToken, label) {
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `sudo -u "${config.input.ec2UserRunner}" ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      `sudo -u "${config.input.ec2UserRunner}" ./run.sh`
+      `sudo -u "avihu.ayaakobi" ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo -u "avihu.ayaakobi" ./run.sh'
     ];
   } else {
     return [
@@ -29,9 +29,9 @@ function buildUserDataScript(githubRegistrationToken, label) {
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `chown -R "${config.input.ec2UserRunner}": /tmp/actions-runner`,
-      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u ${config.input.ec2UserRunner} -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u ${config.input.ec2UserRunner} -- ./run.sh`
+      'chown -R avihu.ayaakobi: /tmp/actions-runner',
+      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./run.sh'
     ];
   }
 }

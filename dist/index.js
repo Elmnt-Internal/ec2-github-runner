@@ -131586,14 +131586,6 @@ const { isUint8Array, isArrayBuffer } = __nccwpck_require__(9830)
 const { File: UndiciFile } = __nccwpck_require__(8511)
 const { parseMIMEType, serializeAMimeType } = __nccwpck_require__(685)
 
-let random
-try {
-  const crypto = __nccwpck_require__(6005)
-  random = (max) => crypto.randomInt(0, max)
-} catch {
-  random = (max) => Math.floor(Math.random(max))
-}
-
 let ReadableStream = globalThis.ReadableStream
 
 /** @type {globalThis['File']} */
@@ -131679,7 +131671,7 @@ function extractBody (object, keepalive = false) {
     // Set source to a copy of the bytes held by object.
     source = new Uint8Array(object.buffer.slice(object.byteOffset, object.byteOffset + object.byteLength))
   } else if (util.isFormDataLike(object)) {
-    const boundary = `----formdata-undici-0${`${random(1e11)}`.padStart(11, '0')}`
+    const boundary = `----formdata-undici-0${`${Math.floor(Math.random() * 1e11)}`.padStart(11, '0')}`
     const prefix = `--${boundary}\r\nContent-Disposition: form-data`
 
     /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
@@ -148388,8 +148380,8 @@ function buildUserDataScript(githubRegistrationToken, label) {
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `sudo -u "${config.input.ec2UserRunner}" ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      `sudo -u "${config.input.ec2UserRunner}" ./run.sh`
+      `sudo -u "avihu.ayaakobi" ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo -u "avihu.ayaakobi" ./run.sh'
     ];
   } else {
     return [
@@ -148401,9 +148393,9 @@ function buildUserDataScript(githubRegistrationToken, label) {
       'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.313.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
-      `chown -R "${config.input.ec2UserRunner}": /tmp/actions-runner`,
-      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u ${config.input.ec2UserRunner} -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
-      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u ${config.input.ec2UserRunner} -- ./run.sh`
+      'chown -R avihu.ayaakobi: /tmp/actions-runner',
+      `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
+      'sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u avihu.ayaakobi -- ./run.sh'
     ];
   }
 }
@@ -148512,7 +148504,7 @@ class Config {
       iamRoleName: core.getInput('iam-role-name'),
       runnerHomeDir: core.getInput('runner-home-dir'),
       preRunnerScript: core.getInput('pre-runner-script'),
-      ec2UserRunner: core.getInput('ec2-user-runner'),
+      // ec2UserRunner: core.getInput('ec2-user-runner'),
     };
 
     const tags = JSON.parse(core.getInput('aws-resource-tags'));
@@ -148800,14 +148792,6 @@ module.exports = require("https");
 
 "use strict";
 module.exports = require("net");
-
-/***/ }),
-
-/***/ 6005:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:crypto");
 
 /***/ }),
 
