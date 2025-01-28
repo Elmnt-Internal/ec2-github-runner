@@ -148380,7 +148380,7 @@ function buildUserDataScript(githubRegistrationToken, label) {
   const tokenArg = 'token';
 
   if (config.input.runnerHomeDir) {
-    // If runner home directory is specified, we expect the actions-runner software (and dependencies)
+    // If runner  home directory is specified, we expect the actions-runner software (and dependencies)
     // to be pre-installed in the AMI, so we simply cd into that directory and then start the runner
     return [
       '#!/bin/bash',
@@ -148524,7 +148524,7 @@ class Config {
       ];
     }
 
-    // the values of github.context.repo.owner and github.context.repo.repo are taken from
+    // the values of  github.context.repo.owner and github.context.repo.repo are taken from
     // the environment variable GITHUB_REPOSITORY specified in "owner/repo" format and
     // provided by the GitHub Action on the runtime
     this.githubContext = {

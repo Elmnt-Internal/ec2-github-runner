@@ -8,7 +8,7 @@ function buildUserDataScript(githubRegistrationToken, label) {
   const tokenArg = 'token';
 
   if (config.input.runnerHomeDir) {
-    // If runner home directory is specified, we expect the actions-runner software (and dependencies)
+    // If runner  home directory is specified, we expect the actions-runner software (and dependencies)
     // to be pre-installed in the AMI, so we simply cd into that directory and then start the runner
     return [
       '#!/bin/bash',

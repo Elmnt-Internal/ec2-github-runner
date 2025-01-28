@@ -28,7 +28,7 @@ class Config {
       ];
     }
 
-    // the values of github.context.repo.owner and github.context.repo.repo are taken from
+    // the values of  github.context.repo.owner and github.context.repo.repo are taken from
     // the environment variable GITHUB_REPOSITORY specified in "owner/repo" format and
     // provided by the GitHub Action on the runtime
     this.githubContext = {
