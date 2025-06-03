@@ -40,12 +40,27 @@ async function getRegistrationToken() {
 }
 
 async function removeRunner() {
-  const runner = await getRunner(config.input.label);
   const octokit = github.getOctokit(config.input.githubToken);
+  let runner = await getRunner(config.input.label);
 
-  // skip the runner removal process if the runner is not found
   if (!runner) {
     core.info(`GitHub self-hosted runner with label ${config.input.label} is not found, so the removal is skipped`);
+    return;
+  }
+
+  let waitTime = 0;
+  const maxWaitTime = 60; // seconds
+  const interval = 10; // seconds
+
+  while (runner.status === 'busy' && waitTime < maxWaitTime) {
+    core.info(`Runner ${runner.name} is busy. Waiting for it to become idle... (${waitTime}s/${maxWaitTime}s)`);
+    await new Promise(resolve => setTimeout(resolve, interval * 1000));
+    waitTime += interval;
+    runner = await getRunner(config.input.label); // Re-fetch status
+  }
+
+  if (runner.status === 'busy') {
+    core.setFailed(`Runner ${runner.name} is still busy after ${maxWaitTime} seconds. Exiting without removal.`);
     return;
   }
 
@@ -55,7 +70,6 @@ async function removeRunner() {
       runner_id: runner.id
     });
     core.info(`GitHub self-hosted runner ${runner.name} is removed`);
-    return;
   } catch (error) {
     core.error('GitHub self-hosted runner removal error');
     throw error;
