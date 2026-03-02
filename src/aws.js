@@ -1,4 +1,4 @@
-const { EC2Client, RunInstancesCommand, TerminateInstancesCommand, waitUntilInstanceRunning  } = require('@aws-sdk/client-ec2');
+const { EC2Client, RunInstancesCommand, TerminateInstancesCommand, waitUntilInstanceRunning } = require('@aws-sdk/client-ec2');
 
 const core = require('@actions/core');
 const config = require('./config');
@@ -26,8 +26,8 @@ function buildUserDataScript(githubRegistrationToken, label) {
       `echo "${config.input.preRunnerScript}" > pre-runner-script.sh`,
       'source pre-runner-script.sh',
       'case $(uname -m) in aarch64) ARCH="arm64" ;; amd64|x86_64) ARCH="x64" ;; esac && export RUNNER_ARCH=${ARCH}',
-      'curl -O -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-${RUNNER_ARCH}-2.329.0.tar.gz',
-      'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.329.0.tar.gz',
+      'curl -O -L https://github.com/actions/runner/releases/download/v2.332.0/actions-runner-linux-${RUNNER_ARCH}-2.332.0.tar.gz',
+      'tar xzf ./actions-runner-linux-${RUNNER_ARCH}-2.332.0.tar.gz',
       'export RUNNER_ALLOW_RUNASROOT=1',
       `chown -R "${config.input.ec2UserRunner}": /tmp/actions-runner`,
       `sudo --preserve-env=RUNNER_ALLOW_RUNASROOT -u ${config.input.ec2UserRunner} -- ./config.sh --url https://github.com/${config.githubContext.owner} --${tokenArg} ${githubRegistrationToken} --labels ${label} --name ${label} --runnergroup default --work _work`,
