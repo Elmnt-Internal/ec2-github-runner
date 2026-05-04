@@ -43,7 +43,7 @@ function buildRunCommands(githubRegistrationToken, label) {
       // Remove stale runner config from AMI so config.sh doesn't refuse to run
       'rm -f .runner .credentials .credentials_rsaparams',
       dbg(`echo "[RUNNER] Configuring runner with label: ${label}, name: ec2-${label}"`),
-      `./config.sh --unattended --url https://github.com/${config.githubContext.owner}/${config.githubContext.repo} --token ${githubRegistrationToken} --labels ${label} --name ec2-${label} --replace`,
+      `./config.sh --unattended --url https://github.com/${config.githubContext.owner} --token ${githubRegistrationToken} --labels ${label} --name ec2-${label} --runnergroup default --replace`,
       dbg('echo "[RUNNER] config.sh completed successfully"'),
     ].filter(Boolean);
   } else {
@@ -69,7 +69,7 @@ function buildRunCommands(githubRegistrationToken, label) {
       dbg('echo "[RUNNER] Extraction complete. Directory contents:" && ls -la'),
       'export RUNNER_ALLOW_RUNASROOT=1',
       dbg(`echo "[RUNNER] Configuring runner with label: ${label}, name: ec2-${label}"`),
-      `./config.sh --unattended --url https://github.com/${config.githubContext.owner}/${config.githubContext.repo} --token ${githubRegistrationToken} --labels ${label} --name ec2-${label} --replace`,
+      `./config.sh --unattended --url https://github.com/${config.githubContext.owner} --token ${githubRegistrationToken} --labels ${label} --name ec2-${label} --runnergroup default --replace`,
       dbg('echo "[RUNNER] config.sh completed successfully"'),
     ].filter(Boolean);
   }

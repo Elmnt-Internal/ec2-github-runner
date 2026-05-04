@@ -9,7 +9,7 @@ async function getRunner(label) {
   const octokit = github.getOctokit(config.input.githubToken);
 
   try {
-    const runners = await octokit.paginate('GET /repos/{owner}/{repo}/actions/runners', config.githubContext);
+    const runners = await octokit.paginate('GET /orgs/{org}/actions/runners', { org: config.githubContext.owner });
     const foundRunners = _.filter(runners, { labels: [{ name: label }] });
     return foundRunners.length > 0 ? foundRunners[0] : null;
   } catch (error) {
@@ -22,7 +22,7 @@ async function getRegistrationToken() {
   const octokit = github.getOctokit(config.input.githubToken);
 
   try {
-    const response = await octokit.request('POST /repos/{owner}/{repo}/actions/runners/registration-token', config.githubContext);
+    const response = await octokit.request('POST /orgs/{org}/actions/runners/registration-token', { org: config.githubContext.owner });
     core.info('GitHub Registration Token is received');
     return response.data.token;
   } catch (error) {
@@ -37,9 +37,9 @@ async function getJitRunnerConfig(label) {
 
   try {
     const response = await octokit.request(
-      'POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig',
+      'POST /orgs/{org}/actions/runners/generate-jitconfig',
       {
-        ...config.githubContext,
+        org: config.githubContext.owner,
         name: `ec2-${label}`,
         runner_group_id: config.input.runnerGroupId,
         labels: [label],
@@ -69,7 +69,7 @@ async function removeRunner() {
   }
 
   try {
-    await octokit.request('DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}', _.merge(config.githubContext, { runner_id: runner.id }));
+    await octokit.request('DELETE /orgs/{org}/actions/runners/{runner_id}', { org: config.githubContext.owner, runner_id: runner.id });
     core.info(`GitHub self-hosted runner ${runner.name} is removed`);
     return;
   } catch (error) {
